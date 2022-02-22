@@ -22,7 +22,7 @@
               </v-row>
             </v-card>
           </v-col>
-          <v-col lg="4" sm="6" cols="12" v-for="unit in units" :key="unit.id">
+          <v-col lg="4" sm="6" cols="12" v-for="unit, index in units" :key="unit.id">
                 <v-card
                     class="mx-auto unit"
                     outlined
@@ -51,7 +51,7 @@
                         <v-btn icon plain large class="ml-1" @click="editUnit(unit, unit.id)" >
                             <v-icon >mdi-square-edit-outline </v-icon>
                         </v-btn>
-                        <v-btn icon plain large @click="deleteUnit(unit.id)">
+                        <v-btn icon plain large @click="deleteUnit(unit.id, index)">
                             <v-icon >mdi-trash-can-outline </v-icon>
                         </v-btn>
                         <v-btn icon plain large @click="showLessonsAdmin(unit)">
@@ -181,11 +181,12 @@ export default {
         else this.showNotification("l'unité n'a pas été ajoutée", 500)
       }
     },
-    async deleteUnit(id){
+    async deleteUnit(id, index){
       let response = await this.delete({ 'tableName': "units", 'id': id })
       if(response) {
+        this.units.splice(index, 1)
         this.showNotification("la traduction a été bien supprimé", 200)
-        await this.getUnits()
+        // await this.getUnits()
       }
       else this.showNotification("Une erreur s'est produite lors de la suppression", 500)
     },

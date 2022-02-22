@@ -121,13 +121,13 @@ export default{
             let total = querySnapshot.docs.length
             return total
         },
-        getProjetsUnitsLessons:async() => {
+        getProjetsUnitsLessons:async(_,id) => {
             const db = getFirestore(firebase);
             let response = []
             let tables = ['projets', 'units' , 'lessons']
             for(let table of tables ){
                 const docRef = collection(db, table);
-                const q = query(docRef, where( 'enabled', "==", true) );
+                const q = query(docRef,  where( 'uid', "==", id) ,where( 'enabled', "==", true) );
                 const querySnapshot = await getDocs(q);
                 let total = querySnapshot.docs.length
                 response.push(total)

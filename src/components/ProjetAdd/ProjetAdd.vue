@@ -21,7 +21,7 @@
             </v-card>
             </v-col>
             
-            <v-col lg="4" sm="6" cols="12" v-for="projet in projets" :key="projet.id">
+            <v-col lg="4" sm="6" cols="12" v-for="projet, index in projets" :key="projet.id">
                 <v-card
                     class="mx-auto"
                     outlined
@@ -51,7 +51,7 @@
                         <v-btn icon plain large class="ml-1" @click="editProjet(projet)" >
                             <v-icon >mdi-square-edit-outline </v-icon>
                         </v-btn>
-                        <v-btn icon plain large @click="deleteProjet(projet)">
+                        <v-btn icon plain large @click="deleteProjet(projet, index)">
                             <v-icon >mdi-trash-can-outline </v-icon>
                         </v-btn>
                         <v-btn icon plain large @click="showUnitsAdmin(projet)">
@@ -308,11 +308,12 @@ export default {
             }
         }
     },
-    async deleteProjet(projet){
-        let response = this.delete({ 'tableName': "projets", 'id': projet.id })
+    async deleteProjet(projet, index){
+        let response = await this.delete({ 'tableName': "projets", 'id': projet.id })
         if(response) {
+            this.projets.splice(index, 1)
             this.showNotification("Le projet a été bien supprimé", 200)
-            await this.getProjets()
+            // await this.getProjets()
         }
         else this.showNotification("Une erreur s'est produite lors de la suppression", 500)
     },

@@ -143,8 +143,10 @@ export default {
     },
   },
   async mounted() {
-    this.totals = await this.getProjetsUnitsLessons();
     this.user = await this.getCurrentUser();
+    if(this.user){
+      this.totals = await this.getProjetsUnitsLessons(this.user.currentUser.uid);
+    }
   },
 };
 </script>

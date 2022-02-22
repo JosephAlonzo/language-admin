@@ -21,7 +21,7 @@
               </v-row>
             </v-card>
           </v-col>
-          <v-col lg="4" sm="6" cols="12" v-for="lesson in lessons" :key="lesson.id">
+          <v-col lg="4" sm="6" cols="12" v-for="lesson, index in lessons" :key="lesson.id">
                 <v-card
                     class="mx-auto unit"
                     outlined
@@ -50,7 +50,7 @@
                         <v-btn icon plain large class="ml-1" @click="editLesson(lesson)" >
                             <v-icon >mdi-square-edit-outline </v-icon>
                         </v-btn>
-                        <v-btn icon plain large @click="deleteLesson(lesson.id)">
+                        <v-btn icon plain large @click="deleteLesson(lesson.id, index)">
                             <v-icon >mdi-trash-can-outline </v-icon>
                         </v-btn>
                         <v-btn icon plain large @click="showActivitiesAdmin(lesson)">
@@ -172,10 +172,11 @@ export default {
         else this.showNotification("la leçon n'a pas été ajoutée", 500)
       }
     },
-    async deleteLesson(id){
+    async deleteLesson(id, index){
       const response = await this.delete({ 'tableName': "lessons", 'id': id })
       if(response) {
-        await this.getLessons()
+        this.lessons.splice(index, 1)
+        //await this.getLessons()
         this.showNotification("la leçon a été bien supprimé", 200)
       } 
       else this.showNotification("Une erreur s'est produite lors de la suppression", 500)

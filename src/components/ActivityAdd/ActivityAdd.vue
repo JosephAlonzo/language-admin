@@ -20,7 +20,7 @@
 
             </v-card>
           </v-col>
-          <v-col lg="4" sm="6" cols="12" v-for="activity in activities" :key="activity.id">
+          <v-col lg="4" sm="6" cols="12" v-for="activity,index in activities" :key="activity.id">
                 <v-card
                     class="mx-auto lesson"
                     outlined
@@ -46,7 +46,7 @@
                         <v-btn icon plain large class="ml-1" @click="editActivity(activity)" >
                             <v-icon >mdi-square-edit-outline </v-icon>
                         </v-btn>
-                        <v-btn icon plain large @click="deleteActivity(activity.id)">
+                        <v-btn icon plain large @click="deleteActivity(activity.id, index)">
                             <v-icon >mdi-trash-can-outline </v-icon>
                         </v-btn>
                        
@@ -214,10 +214,11 @@ export default {
         this.e1=1
       }
     },
-    async deleteActivity(id){
+    async deleteActivity(id, index){
       const response = await this.delete({ 'tableName': "activities", 'id': id })
       if(response) {
-        await this.getActivities()
+        this.activities.splice(index, 1)
+        //await this.getActivities()
         this.showNotification("la activité a été bien supprimé", 200)
       } 
       else this.showNotification("Une erreur s'est produite lors de la suppression", 500)
@@ -257,9 +258,9 @@ export default {
     },
     async getActivities(){
       const tableName = 'activities'
+      this.activities = []; 
       const response = await this.getByQuery({ "tableName":tableName, "field": 'lessonId', 'id': this.id } );
       if(response){
-        this.activities = []; 
         for(let activity of response){
           this.activities.push( activity )
         }
