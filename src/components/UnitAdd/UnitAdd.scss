@@ -1,0 +1,24 @@
+@import "../../styles/app";
+
+.flag
+{
+    border: dashed #CFD8DC 3px;
+}
+.flag:hover {
+    border: dashed $primary 3px;
+}
+
+.active
+{
+    border: dashed $primary 3.5px !important;
+}
+
+.card-flag
+{
+    border: solid #CFD8DC 3px;
+}
+
+.unit {
+    min-height: 240px !important;
+    max-height: 240px !important;
+}
